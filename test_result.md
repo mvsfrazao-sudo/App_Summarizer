@@ -321,10 +321,15 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Error Handling for Invalid File Upload Timeout"
+    - "Homepage Display and Navigation"
+    - "PDF Upload Interface"
+    - "PDF Processing Workflow"
+    - "Results Display and Tabs"
+    - "Interactive Features (Copy, Download, Preview)"
+    - "API Integration"
   stuck_tasks:
     []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
