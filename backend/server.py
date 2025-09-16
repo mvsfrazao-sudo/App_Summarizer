@@ -93,7 +93,7 @@ async def process_paper_async(paper_id: str):
         )
         
         # Generate accessible summary using AI
-        summary_data = ai_summarizer.create_accessible_summary(paper_data)
+        summary_data = await ai_summarizer.create_accessible_summary(paper_data)
         
         # Update progress
         await db.papers.update_one(
