@@ -66,7 +66,15 @@ class AISummarizer:
             
             # Try to parse JSON response
             try:
-                summary_data = json.loads(response)
+                # Remove markdown code blocks if present
+                response_text = response.strip()
+                if response_text.startswith('```json'):
+                    response_text = response_text[7:]  # Remove ```json
+                if response_text.endswith('```'):
+                    response_text = response_text[:-3]  # Remove ```
+                response_text = response_text.strip()
+                
+                summary_data = json.loads(response_text)
                 return summary_data
             except json.JSONDecodeError:
                 # If JSON parsing fails, return a fallback summary
