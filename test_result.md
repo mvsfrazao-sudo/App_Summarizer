@@ -339,15 +339,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Homepage Display and Navigation"
-    - "PDF Upload Interface"
-    - "PDF Processing Workflow"
-    - "Results Display and Tabs"
-    - "Interactive Features (Copy, Download, Preview)"
-    - "API Integration"
-  stuck_tasks:
     []
-  test_all: true
+  stuck_tasks:
+    - "PDF Processing Workflow"
+    - "API Integration"
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
