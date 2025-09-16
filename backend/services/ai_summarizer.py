@@ -1,15 +1,15 @@
-import requests
-import json
 import os
+import json
+import asyncio
 from typing import Dict, List
 from models import KeyPoint
+from emergentintegrations.llm.chat import LlmChat, UserMessage
 
 class AISummarizer:
     def __init__(self):
         self.api_key = os.environ.get('EMERGENT_LLM_KEY', 'sk-emergent-6Fe62898991Ec31C79')
-        self.base_url = "https://api.emergent.sh"
     
-    def create_accessible_summary(self, paper_data: Dict[str, str]) -> Dict:
+    async def create_accessible_summary(self, paper_data: Dict[str, str]) -> Dict:
         """Create an accessible summary from academic paper data"""
         
         # Prepare the prompt for AI summarization
@@ -51,37 +51,30 @@ class AISummarizer:
         """
 
         try:
-            response = requests.post(
-                f"{self.base_url}/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {self.api_key}",
-                    "Content-Type": "application/json"
-                },
-                json={
-                    "model": "gpt-4o",
-                    "messages": [
-                        {"role": "system", "content": "You are an expert academic communication specialist who excels at making complex research accessible to general audiences."},
-                        {"role": "user", "content": prompt}
-                    ],
-                    "temperature": 0.7,
-                    "max_tokens": 2000
-                },
-                timeout=60
+            # Initialize LlmChat with the API key
+            llm_chat = LlmChat(api_key=self.api_key)
+            
+            # Create the chat messages
+            system_message = "You are an expert academic communication specialist who excels at making complex research accessible to general audiences."
+            user_message = UserMessage(content=prompt)
+            
+            # Send the chat request
+            response = await llm_chat.chat(
+                model="gpt-4o",
+                messages=[system_message, user_message],
+                temperature=0.7,
+                max_tokens=2000
             )
             
-            if response.status_code == 200:
-                ai_response = response.json()
-                content = ai_response['choices'][0]['message']['content']
-                
-                # Try to parse JSON response
-                try:
-                    summary_data = json.loads(content)
-                    return summary_data
-                except json.JSONDecodeError:
-                    # If JSON parsing fails, return a fallback summary
-                    return self._create_fallback_summary(paper_data)
-            else:
-                print(f"AI API Error: {response.status_code} - {response.text}")
+            # Extract content from response
+            content = response.choices[0].message.content
+            
+            # Try to parse JSON response
+            try:
+                summary_data = json.loads(content)
+                return summary_data
+            except json.JSONDecodeError:
+                # If JSON parsing fails, return a fallback summary
                 return self._create_fallback_summary(paper_data)
                 
         except Exception as e:
