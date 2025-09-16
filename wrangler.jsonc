@@ -1,5 +1,5 @@
 {
-  "name": "appsummarizer",
+  "name": "academicsummarizer",
   "main": "src/index.ts",
   "compatibility_date": "2025-09-16"
 }
