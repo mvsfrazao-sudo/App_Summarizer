@@ -251,9 +251,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "AI Summarization Integration"
+    - "Error Handling for Invalid File Upload Timeout"
   stuck_tasks:
-    - "AI Summarization Integration"
+    []
   test_all: false
   test_priority: "high_first"
 
