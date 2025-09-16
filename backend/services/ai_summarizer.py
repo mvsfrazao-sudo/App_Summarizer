@@ -74,6 +74,8 @@ class AISummarizer:
                 
         except Exception as e:
             print(f"AI Summarization error: {str(e)}")
+            import traceback
+            traceback.print_exc()
             return self._create_fallback_summary(paper_data)
 
     def _create_fallback_summary(self, paper_data: Dict[str, str]) -> Dict:
