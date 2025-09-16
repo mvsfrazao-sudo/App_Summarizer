@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test the Academic Summarizer backend API with comprehensive testing of all endpoints including health check, file upload, status polling, AI processing, results retrieval, and file downloads."
+user_problem_statement: "Test the complete Academic Summarizer frontend application using comprehensive testing of homepage, PDF upload, processing workflow, results display, and interactive features with real PDF file processing."
 
 backend:
   - task: "Health Check API"
