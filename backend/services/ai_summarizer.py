@@ -51,27 +51,22 @@ class AISummarizer:
         """
 
         try:
-            # Initialize LlmChat with the API key
-            llm_chat = LlmChat(api_key=self.api_key)
+            # Initialize LlmChat with the API key and system message
+            llm_chat = LlmChat(
+                api_key=self.api_key,
+                session_id="summarizer_session",
+                system_message="You are an expert academic communication specialist who excels at making complex research accessible to general audiences."
+            ).with_model("openai", "gpt-4o")
             
-            # Create the chat messages
-            system_message = "You are an expert academic communication specialist who excels at making complex research accessible to general audiences."
-            user_message = UserMessage(content=prompt)
+            # Create user message
+            user_message = UserMessage(text=prompt)
             
-            # Send the chat request
-            response = await llm_chat.chat(
-                model="gpt-4o",
-                messages=[system_message, user_message],
-                temperature=0.7,
-                max_tokens=2000
-            )
-            
-            # Extract content from response
-            content = response.choices[0].message.content
+            # Send the message and get response
+            response = await llm_chat.send_message(user_message)
             
             # Try to parse JSON response
             try:
-                summary_data = json.loads(content)
+                summary_data = json.loads(response)
                 return summary_data
             except json.JSONDecodeError:
                 # If JSON parsing fails, return a fallback summary
